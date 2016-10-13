@@ -1,0 +1,19 @@
+{% embed "ToroWidgetBundle::widget.html.twig" %}
+    {% block toro_widget_content %}
+        {% block wg_demo %}
+            <div>
+                <div class="wg-container">
+                    <div>
+                        <strong>{{ data.cool }}</strong>
+                        <strong>{{ random() }}</strong>
+                    </div>
+                </div>
+
+                <button type="button" data-widget-load="{}">load</button>
+                <button type="button" data-widget-reload="{}">reload</button>
+                <button type="button" data-widget-pull="{}">pull</button>
+                <button type="button" data-widget-more="{}">more</button>
+            </div>
+        {% endblock %}
+    {% endblock %}
+{% endembed %}

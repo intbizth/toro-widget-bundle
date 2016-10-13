@@ -1,0 +1,38 @@
+<html>
+<head>
+    <title>Demo Widget</title>
+    <style>
+        /*.wg-toro {
+            height: 100px;
+            width: 400px;
+            border: 1px solid crimson;
+            margin-bottom: 200px;
+        }*/
+    </style>
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ asset("bundles/torowidget/css/style.css") }}">
+    <script src="{{ asset('bundles/torowidget/js/waypoints.min.js') }}"></script>
+    <script src="{{ asset('bundles/torowidget/js/inview.min.js') }}"></script>
+</head>
+<body>
+{#
+{{ wg_demo() }}
+{{ wg_demo2() }}
+{{ wg_demo_lazy() }}
+{{ wg_demo_auto_refresh() }}
+{{ wg_demo_auto_refresh_onscreen() }}
+{{ wg_demo_auto_refresh_lazy() }}
+#}
+
+<div class="container">
+    {{ wg_news_latest() }}
+</div>
+
+<script src="{{ asset("/assets/jquery/jquery.min.js") }}"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"
+        integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS"
+        crossorigin="anonymous"></script>
+<script src="{{ asset("/bundles/torowidget/js/widget.js") }}"></script>
+</body>
+</html>

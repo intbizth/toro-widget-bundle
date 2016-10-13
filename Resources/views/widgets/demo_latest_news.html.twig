@@ -1,0 +1,13 @@
+{% embed "ToroWidgetBundle::widget.html.twig" %}
+    {% block toro_widget_content %}
+        <ul class="list-group wg-container">
+            {% for r in data %}
+                <li class="list-group-item">{{ r.title }}</li>
+            {% endfor %}
+        </ul>
+
+        {% if data.haveToPaginate() %}
+            <button type="button" class="btn btn-default" data-widget-more="{{ {page: data.nextPage}|json_encode }}">Load more</button>
+        {% endif %}
+    {% endblock %}
+{% endembed %}

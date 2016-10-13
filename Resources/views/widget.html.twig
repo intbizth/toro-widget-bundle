@@ -1,0 +1,20 @@
+{%- block toro_widget -%}
+    <div class="wg-toro wg-toro__{{ name }}{% if 'away' == options['visibility'] %} wg-toro--loaded{% endif %}"
+         data-widget-name="{{ name }}"
+         data-widget-options="{{ options|json_encode(16) }}"
+         data-widget-visibility="{{ options['visibility'] }}"
+         {% if options['auto_refresh']|default(false) %}
+             data-widget-auto-refresh="{{ options['auto_refresh'] }}"
+             data-widget-auto-refresh-timer="{{ options['auto_refresh_timer'] }}"
+         {% endif %}
+    >
+        {% if 'away' == options['visibility'] %}
+            {% block toro_widget_title %}
+                {% if options['title'] %}
+                    <h4 class="wg-title-toro{% if options['title_classes'] %} {{ options['title_classes']|trim }}{% endif %}">{{ options['title'] }}</h4>
+                {% endif %}
+            {% endblock %}
+            {% block toro_widget_content %}{% endblock %}
+        {% endif %}
+    </div>
+{%- endblock toro_widget -%}
