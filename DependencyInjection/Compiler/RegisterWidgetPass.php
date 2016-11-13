@@ -33,9 +33,12 @@ class RegisterWidgetPass implements CompilerPassInterface
 
             $reflex = new \ReflectionClass($class);
 
-            if ($reflex->implementsInterface(WidgetInterface::class) && isset($widgets[$class])) {
-                $definition->addMethodCall('setDefaultOptions', [$widgets[$class]['options']]);
+            if ($reflex->implementsInterface(WidgetInterface::class)) {
                 $definition->addMethodCall('setRouter', [new Reference('router')]);
+
+                if (isset($widgets[$class])) {
+                    $definition->addMethodCall('setDefaultOptions', [$widgets[$class]['options']]);
+                }
             }
 
             if ($reflex->implementsInterface(ContainerAwareWidgetInterface::class)) {

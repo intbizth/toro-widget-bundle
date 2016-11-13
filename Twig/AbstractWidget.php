@@ -133,6 +133,7 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
             unset($options['auto_refresh']);
             unset($options['auto_refresh_timer']);
         }
+
         return $env->render($template, array(
             'data' => $data,
             'options' => $options,

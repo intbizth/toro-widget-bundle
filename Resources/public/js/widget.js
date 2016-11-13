@@ -251,7 +251,7 @@
 
         var error = opt.error || function () {
                 this.mask('hide');
-                this.$element.replaceWith('<div class="wg-error">Error!</div>');
+                this.$element.replaceWith('<div class="wg-error"></div>');
             };
 
         this.$element.removeClass('wg-toro--loaded');
