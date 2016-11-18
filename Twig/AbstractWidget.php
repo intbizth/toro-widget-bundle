@@ -121,7 +121,6 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
         $this->rendered = true;
 
         $template = $options['template'];
-        unset($options['template']);
 
         if (empty($options['remote']['url'])) {
             $url = $this->router->generate($options['remote']['route'], $options);
