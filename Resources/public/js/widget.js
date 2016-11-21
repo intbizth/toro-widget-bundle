@@ -213,10 +213,9 @@
 
         var me = this;
         var mode = opt.mode || 'clear';
+        var callback = (opt.options || {}).callback || {};
 
-        var success = opt.success || function (response) {
-                this.mask('hide');
-
+        var success = opt.success || window[callback.success] || function (response) {
                 var $response = $(response);
 
                 var $content = this.$element.find('.wg-container').html();
@@ -249,8 +248,7 @@
                 $(document).trigger('dom-node-inserted', [this.$element]);
             };
 
-        var error = opt.error || function () {
-                this.mask('hide');
+        var error = opt.error || window[callback.error] || function () {
                 this.$element.replaceWith('<div class="wg-error"></div>');
             };
 
@@ -267,11 +265,41 @@
                 }
             },
             error: function (response) {
-                console.log(response);
+                me.mask('hide');
                 error.call(me, response);
             },
             success: function (response) {
+                me.mask('hide');
                 success.call(me, response);
+            }
+        });
+    };
+
+    // slick extension
+    // TODO: slick pull to refresh (or when slide first page)
+    Widget.prototype.slick = function (slick, options) {
+        var defaultOptions = deepExtend({distancePageLoad: 2, slickContainer: '.wg-container'}, options || {});
+        var rows = slick.options.rows, slidesToShow = slick.options.slidesToShow, slidesPerPage = rows * slidesToShow;
+        var slidedItems = (slick.currentSlide * rows) + (rows * slidesToShow);
+        var currentPage = slidedItems / slidesPerPage;
+        var totalItems = this.$element.find('.slick-slide').length * rows;
+        var totalPages = parseInt(totalItems / slidesPerPage);
+        var me = this;
+
+        if (0 !== slick.currentDirection || ((totalPages - currentPage) > defaultOptions.distancePageLoad)) {
+            return;
+        }
+
+        if (this.options['current_page'] == this.options['total_page']) {
+            return;
+        }
+
+        this.options['page']++;
+
+        this.load({
+            success: function (response) {
+                slick.addSlide($(response).find(defaultOptions.slickContainer).html());
+                $(document).trigger('dom-node-inserted', [me.$element]);
             }
         });
     };

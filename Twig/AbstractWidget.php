@@ -161,7 +161,8 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
                 'method' => 'GET',
             ],
             // widget js control options
-            'control' => []
+            'control' => [],
+            'callback' => [],
         ]);
 
         $resolver->setAllowedTypes('title', ['string']);
@@ -172,6 +173,7 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
         $resolver->setAllowedTypes('template', ['null', 'string']);
         $resolver->setAllowedTypes('remote', ['null', 'array']);
         $resolver->setAllowedTypes('control', ['null', 'array']);
+        $resolver->setAllowedTypes('callback', ['null', 'array']);
 
         $resolver->setRequired(['template']);
 
