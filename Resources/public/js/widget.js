@@ -278,30 +278,55 @@
     // slick extension
     // TODO: slick pull to refresh (or when slide first page)
     Widget.prototype.slick = function (slick, options) {
-        var defaultOptions = deepExtend({distancePageLoad: 2, slickContainer: '.wg-container'}, options || {});
-        var rows = slick.options.rows, slidesToShow = slick.options.slidesToShow, slidesPerPage = rows * slidesToShow;
-        var slidedItems = (slick.currentSlide * rows) + (rows * slidesToShow);
-        var currentPage = slidedItems / slidesPerPage;
-        var totalItems = this.$element.find('.slick-slide').length * rows;
-        var totalPages = parseInt(totalItems / slidesPerPage);
         var me = this;
+        var defaultOptions = deepExtend({
+            lazyLoad: true,
+            instantLoad: false,
+            distancePageLoad: 2,
+            slickInstantContainer: '.slick-active',
+            slickContainer: '.wg-container'
+        }, options || {});
 
-        if (0 !== slick.currentDirection || ((totalPages - currentPage) > defaultOptions.distancePageLoad)) {
+        sessionStorage.setItem('toro-current-slick-' + slick.instanceUid, slick.currentSlide);
+
+        if (true === defaultOptions.instantLoad) {
+            this.load({
+                success: function (response) {
+                    var $container = me.$element.find(defaultOptions.slickInstantContainer);
+
+                    $container.html($(response).find('.wg-container').html());
+
+                    $(document).trigger('dom-node-inserted', [$container]);
+                }
+            });
+
             return;
         }
 
-        if (this.options['current_page'] == this.options['total_page']) {
-            return;
-        }
+        if (true === defaultOptions.lazyLoad) {
+            var rows = slick.options.rows, slidesToShow = slick.options.slidesToShow, slidesPerPage = rows * slidesToShow;
+            var slidedItems = (slick.currentSlide * rows) + (rows * slidesToShow);
+            var currentPage = slidedItems / slidesPerPage;
+            var totalItems = this.$element.find('.slick-slide').length * rows;
+            var totalPages = parseInt(totalItems / slidesPerPage);
 
-        this.options['page']++;
-
-        this.load({
-            success: function (response) {
-                slick.addSlide($(response).find(defaultOptions.slickContainer).html());
-                $(document).trigger('dom-node-inserted', [me.$element]);
+            if (0 !== slick.currentDirection || ((totalPages - currentPage) > defaultOptions.distancePageLoad)) {
+                return;
             }
-        });
+
+            if (this.options['current_page'] == this.options['total_page']) {
+                return;
+            }
+
+            this.options['page']++;
+
+            this.load({
+                success: function (response) {
+                    slick.addSlide($(response).find(defaultOptions.slickContainer).html());
+                    $(document).trigger('dom-node-inserted', [me.$element]);
+                }
+            });
+        }
     };
 
     Widget.prototype.submit = function () {
