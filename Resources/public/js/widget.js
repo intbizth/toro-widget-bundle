@@ -284,7 +284,8 @@
             instantLoad: false,
             distancePageLoad: 2,
             slickInstantContainer: '.slick-active',
-            slickContainer: '.wg-container'
+            slickContainer: '.wg-container',
+            paginate: true
         }, options || {});
 
         sessionStorage.setItem('toro-current-slick-' + slick.instanceUid, slick.currentSlide);
@@ -309,6 +310,24 @@
             var currentPage = slidedItems / slidesPerPage;
             var totalItems = this.$element.find('.slick-slide').length * rows;
             var totalPages = parseInt(totalItems / slidesPerPage);
+
+            // total pages from server side
+            if (defaultOptions.paginate && this.options['total_page'] > 1) {
+                if (!slick.$slider.find('.slick-slider-paginate').length) {
+                    slick.$slider.prepend($(
+                        '<div class="slick-slider-paginate">' +
+                        '   <span class="current-page"></span>' +
+                        '   <span class="separate-page">/</span>' +
+                        '   <span class="total-page"></span>' +
+                        '</div>'
+                    ));
+                }
+
+                var paginator = slick.$slider.find('.slick-slider-paginate');
+
+                paginator.find('.current-page').html(currentPage);
+                paginator.find('.total-page').html(Math.ceil(defaultOptions.paginate / slidesPerPage));
+            }
 
             if (0 !== slick.currentDirection || ((totalPages - currentPage) > defaultOptions.distancePageLoad)) {
                 return;
