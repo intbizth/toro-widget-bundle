@@ -18,13 +18,13 @@
     border-radius: 50%;
     width: 16px;
     height: 16px;
-    border: 0.25rem solid white;
+    border: 0.15rem solid white;
     border-top-color: #0070ff;
     animation: wg-spin 1s infinite linear;
 }
 
 button .wg-loading, button .wg-loading--double, a .wg-loading, a .wg-loading--double {
-    border-width: .2rem;
+    border-width: .1rem;
     width: 13px;
     height: 13px;
     margin-right: 4px;
@@ -32,11 +32,11 @@ button .wg-loading, button .wg-loading--double, a .wg-loading, a .wg-loading--do
 
 .wg-loading--double {
     border-style: double;
-    border-width: .4rem;
+    border-width: .2rem;
 }
 
 button .wg-loading--double, a .wg-loading--double {
-    border-width: .2rem;
+    border-width: .1rem;
 }
 
 .wg-loading-pulse {
