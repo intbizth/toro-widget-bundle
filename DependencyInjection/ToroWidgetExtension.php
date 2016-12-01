@@ -42,7 +42,7 @@ class ToroWidgetExtension extends Extension
                 $container->setDefinition(strtolower(str_replace('\\', '_', $class)), $def);
             }
 
-            $def->setClass($class)->addTag('twig.extension')->setLazy(true);
+            $def->setClass($class)->addTag('twig.extension');
         }
     }
 }
