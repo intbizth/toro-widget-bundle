@@ -17,7 +17,7 @@
     };
 
     var LazyLoad = function (widget) {
-        if ('onscreen' != widget.options.visibility) {
+        if ('onscreen' != widget.options.visibility || !widget.$element.is(':visible')) {
             return;
         }
 
@@ -53,6 +53,10 @@
         var autoRefreshInterval;
 
         if ('onscreen' === widget.options.auto_refresh) {
+            if(!widget.$element.is(':visible')){
+                return;
+            }
+
             new Waypoint.Inview({
                 element: widget.$element[0],
                 entered: function () {
