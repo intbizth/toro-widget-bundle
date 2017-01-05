@@ -5,10 +5,11 @@ namespace Toro\Bundle\WidgetBundle\DependencyInjection;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\FileLocator;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\HttpKernel\DependencyInjection\Extension;
 use Symfony\Component\DependencyInjection\Loader;
 
-class ToroWidgetExtension extends Extension
+class ToroWidgetExtension extends Extension implements PrependExtensionInterface
 {
     /**
      * {@inheritdoc}
@@ -45,4 +46,15 @@ class ToroWidgetExtension extends Extension
             $def->setClass($class)->addTag('twig.extension');
         }
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function prepend(ContainerBuilder $container)
+    {
+        $container->prependExtensionConfig('twig', [
+            'paths' => [$container->getParameter('kernel.root_dir') . '/widgets' => 'ToroWidget']
+        ]);
+    }
+
 }

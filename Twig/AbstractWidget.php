@@ -133,9 +133,21 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
             unset($options['auto_refresh_timer']);
         }
 
+        $script = $options['script'];
+        if (null !== $options['script']) {
+            unset($options['script']);
+        }
+
+        $style = $options['style'];
+        if (null !== $options['style']) {
+            unset($options['style']);
+        }
+
         return $env->render($template, array(
             'data' => $data,
             'options' => $options,
+            'style' => $style,
+            'script' => $script,
             'name' => $this->getName(),
         ));
     }
@@ -163,6 +175,8 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
             // widget js control options
             'control' => [],
             'callback' => [],
+            'style' => null,
+            'script' => null,
         ]);
 
         $resolver->setAllowedTypes('title', ['string']);
@@ -174,6 +188,8 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
         $resolver->setAllowedTypes('remote', ['null', 'array']);
         $resolver->setAllowedTypes('control', ['null', 'array']);
         $resolver->setAllowedTypes('callback', ['null', 'array']);
+        $resolver->setAllowedTypes('style', ['null', 'string']);
+        $resolver->setAllowedTypes('script', ['null', 'string']);
 
         $resolver->setRequired(['template']);
 
@@ -195,4 +211,9 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
      * @return mixed
      */
     abstract protected function getData(array &$options = []);
+
+    /**
+     * {@inheritdoc}
+     */
+    //abstract public function getName();
 }

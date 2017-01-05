@@ -367,6 +367,23 @@
         })
     }
 
+    var loadScript = function (href) {
+        $.getScript(href);
+    }
+
+    var loadStyle = function (href) {
+        var $d = $.Deferred();
+        var $link = $('<link/>', {
+            rel: 'stylesheet',
+            type: 'text/css',
+            href: href
+        }).appendTo('head');
+
+        $d.resolve($link);
+
+        return $d.promise();
+    }
+
     var old = $.fn.twidget;
     $.fn.twidget = Plugin;
     $.fn.twidget.Constructor = Widget;
@@ -379,6 +396,16 @@
 
     // DATA-API
     $('[data-widget-name]').each(function () {
-        Plugin.call($(this));
+        var $this = $(this);
+
+        if ($this.data('widget-style')) {
+            loadStyle($this.data('widget-style'));
+        }
+
+        if ($this.data('widget-script')) {
+            loadScript($this.data('widget-script'));
+        }
+
+        Plugin.call($this);
     });
 }($);

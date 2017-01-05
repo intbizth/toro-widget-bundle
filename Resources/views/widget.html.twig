@@ -7,6 +7,12 @@
              data-widget-auto-refresh="{{ options['auto_refresh'] }}"
              data-widget-auto-refresh-timer="{{ options['auto_refresh_timer'] }}"
          {% endif %}
+         {% if script %}
+             data-widget-script="{{ asset(script) }}"
+         {% endif %}
+         {% if style %}
+             data-widget-style="{{ asset(style) }}"
+         {% endif %}
     >
         {% if 'away' == options['visibility'] %}
             {% block toro_widget_title %}
