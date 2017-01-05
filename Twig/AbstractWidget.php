@@ -143,11 +143,17 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
             unset($options['style']);
         }
 
+        $callback = $options['script-callback'];
+        if (null !== $options['script-callback']) {
+            unset($options['script-callback']);
+        }
+
         return $env->render($template, array(
             'data' => $data,
             'options' => $options,
             'style' => $style,
             'script' => $script,
+            'callback' => $callback,
             'name' => $this->getName(),
         ));
     }
@@ -177,6 +183,7 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
             'callback' => [],
             'style' => null,
             'script' => null,
+            'script-callback' => null,
         ]);
 
         $resolver->setAllowedTypes('title', ['string']);
@@ -190,6 +197,7 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
         $resolver->setAllowedTypes('callback', ['null', 'array']);
         $resolver->setAllowedTypes('style', ['null', 'string']);
         $resolver->setAllowedTypes('script', ['null', 'string']);
+        $resolver->setAllowedTypes('script-callback', ['null', 'string']);
 
         $resolver->setRequired(['template']);
 

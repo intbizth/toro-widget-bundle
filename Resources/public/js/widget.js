@@ -368,13 +368,17 @@
     }
 
     window['_TORO_WIDGET_ASSETS_'] = {};
-    var loadScript = function (href) {
+    var loadScript = function (href, callback) {
         if (_TORO_WIDGET_ASSETS_[href]) {
+            if (callback) {
+                callback();
+            }
+
             return;
         }
 
         _TORO_WIDGET_ASSETS_[href] = true;
-        $.getScript(href);
+        $.getScript(href, callback);
     }
 
     var loadStyle = function (href) {
@@ -415,7 +419,11 @@
         }
 
         if ($this.data('widget-script')) {
-            loadScript($this.data('widget-script'));
+            loadScript($this.data('widget-script'), function () {
+                if ($this.data('widget-script-callback')) {
+                    window[$this.data('widget-script-callback')]();
+                }
+            });
         }
 
         Plugin.call($this);
