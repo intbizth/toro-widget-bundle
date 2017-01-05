@@ -131,34 +131,34 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
             unset($options['auto_refresh_timer']);
         }
 
-        $script = $options['script'];
-        $style = $options['style'];
-        $callback = $options['script_callback'];
-        $style_inline = $options['style_inline'];
-        $style_class = $options['style_class'];
-        $wg_style_inline = $options['wg_style_inline'];
-        $wg_style_class = $options['wg_style_class'];
+        $scripts = $options['scripts'];
+        $styles = $options['styles'];
+        $callbacks = $options['script_callbacks'];
+        $style_inline = $options['css'];
+        $style_class = $options['style'];
+        $wg_css = $options['wg_css'];
+        $wg_style = $options['wg_style'];
 
         unset(
-            $options['script'],
-            $options['style'],
-            $options['script_callback'],
-            $options['wg_style_inline'],
-            $options['wg_style_class'],
-            $options['style_inline'],
-            $options['style_class']
+            $options['scripts'],
+            $options['styles'],
+            $options['script_callbacks'],
+            $options['wg_css'],
+            $options['wg_style'],
+            $options['css'],
+            $options['style']
         );
 
         return $env->render($template, array(
             'data' => $data,
             'options' => $options,
-            'style' => $style,
-            'script' => $script,
-            'callback' => $callback,
-            'style_inline' => $style_inline,
-            'style_class' => $style_class,
-            'wg_style_inline' => $wg_style_inline,
-            'wg_style_class' => $wg_style_class,
+            'styles' => (array) $styles,
+            'scripts' => (array) $scripts,
+            'callbacks' => $callbacks,
+            'css' => $style_inline,
+            'style' => $style_class,
+            'wg_css' => $wg_css,
+            'wg_style' => $wg_style,
             'name' => $this->getName(),
         ));
     }
@@ -186,13 +186,13 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
             // widget js control options
             'control' => [],
             'callback' => [],
+            'styles' => null,
+            'scripts' => null,
+            'script_callbacks' => null,
             'style' => null,
-            'script' => null,
-            'script_callback' => null,
-            'style_class' => null,
-            'style_inline' => null,
-            'wg_style_class' => null,
-            'wg_style_inline' => null,
+            'css' => null,
+            'wg_style' => null,
+            'wg_css' => null,
         ]);
 
         $resolver->setAllowedTypes('title', ['string']);
@@ -204,13 +204,13 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
         $resolver->setAllowedTypes('remote', ['null', 'array']);
         $resolver->setAllowedTypes('control', ['null', 'array']);
         $resolver->setAllowedTypes('callback', ['null', 'array']);
+        $resolver->setAllowedTypes('styles', ['null', 'string', 'array']);
+        $resolver->setAllowedTypes('scripts', ['null', 'string', 'array']);
+        $resolver->setAllowedTypes('script_callbacks', ['null', 'string']);
         $resolver->setAllowedTypes('style', ['null', 'string']);
-        $resolver->setAllowedTypes('script', ['null', 'string']);
-        $resolver->setAllowedTypes('script_callback', ['null', 'string']);
-        $resolver->setAllowedTypes('style_class', ['null', 'string']);
-        $resolver->setAllowedTypes('style_inline', ['null', 'string']);
-        $resolver->setAllowedTypes('wg_style_class', ['null', 'string']);
-        $resolver->setAllowedTypes('wg_style_inline', ['null', 'string']);
+        $resolver->setAllowedTypes('css', ['null', 'string']);
+        $resolver->setAllowedTypes('wg_style', ['null', 'string']);
+        $resolver->setAllowedTypes('wg_css', ['null', 'string']);
 
         $resolver->setRequired(['template']);
 

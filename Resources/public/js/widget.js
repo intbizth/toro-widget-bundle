@@ -413,17 +413,23 @@
     // DATA-API
     $('[data-widget-name]').each(function () {
         var $this = $(this);
+        var styles = $this.data('widget-styles') || [];
+        var scripts = $this.data('widget-scripts') || [];
 
-        if ($this.data('widget-style')) {
-            loadStyle($this.data('widget-style'));
+        if (styles.length) {
+            for(var i = 0; i < styles.length; i++) {
+                loadStyle(styles[i]);
+            }
         }
 
-        if ($this.data('widget-script')) {
-            loadScript($this.data('widget-script'), function () {
-                if ($this.data('widget-script-callback')) {
-                    window[$this.data('widget-script-callback')]();
-                }
-            });
+        if (scripts.length) {
+            var callbacks = $this.data('widget-script-callbacks') || [];
+            for (var i = 0; i < scripts.length; i++) {
+                var callback = callbacks[i] || function () {};
+                loadScript(scripts[i], function () {
+                    callback();
+                });
+            }
         }
 
         Plugin.call($this);
