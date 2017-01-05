@@ -367,11 +367,23 @@
         })
     }
 
+    window['_TORO_WIDGET_ASSETS_'] = {};
     var loadScript = function (href) {
+        if (_TORO_WIDGET_ASSETS_[href]) {
+            return;
+        }
+
+        _TORO_WIDGET_ASSETS_[href] = true;
         $.getScript(href);
     }
 
     var loadStyle = function (href) {
+        if (_TORO_WIDGET_ASSETS_[href]) {
+            return;
+        }
+
+        _TORO_WIDGET_ASSETS_[href] = true;
+
         var $d = $.Deferred();
         var $link = $('<link/>', {
             rel: 'stylesheet',
