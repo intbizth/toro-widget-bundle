@@ -1,5 +1,5 @@
 {%- block toro_widget -%}
-    <div class="wg-toro wg-toro__{{ name }}{% if 'away' == options['visibility'] %} wg-toro--loaded{% endif %}"
+    <div class="wg-toro wg-toro__{{ name }}{% if 'away' == options['visibility'] %} wg-toro--loaded{% endif %}{% if wg_style_class %} {{ wg_style_class }}{% endif %}"
          data-widget-name="{{ name }}"
          data-widget-options="{{ options|json_encode(16) }}"
          data-widget-visibility="{{ options['visibility'] }}"
@@ -15,6 +15,9 @@
          {% endif %}
          {% if style %}
              data-widget-style="{{ asset(style) }}"
+         {% endif %}
+         {% if wg_style_inline %}
+             style="{{ wg_style_inline|raw }}"
          {% endif %}
     >
         {% if 'away' == options['visibility'] %}

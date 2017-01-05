@@ -114,8 +114,6 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
 
         if ('away' === $options['visibility']) {
             $data = $this->getData($options);
-            // the getData() can modify option
-            $options = $this->resolverOptions($options);
         }
 
         $this->rendered = true;
@@ -134,19 +132,22 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
         }
 
         $script = $options['script'];
-        if (null !== $options['script']) {
-            unset($options['script']);
-        }
-
         $style = $options['style'];
-        if (null !== $options['style']) {
-            unset($options['style']);
-        }
+        $callback = $options['script_callback'];
+        $style_inline = $options['style_inline'];
+        $style_class = $options['style_class'];
+        $wg_style_inline = $options['wg_style_inline'];
+        $wg_style_class = $options['wg_style_class'];
 
-        $callback = $options['script-callback'];
-        if (null !== $options['script-callback']) {
-            unset($options['script-callback']);
-        }
+        unset(
+            $options['script'],
+            $options['style'],
+            $options['script_callback'],
+            $options['wg_style_inline'],
+            $options['wg_style_class'],
+            $options['style_inline'],
+            $options['style_class']
+        );
 
         return $env->render($template, array(
             'data' => $data,
@@ -154,6 +155,10 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
             'style' => $style,
             'script' => $script,
             'callback' => $callback,
+            'style_inline' => $style_inline,
+            'style_class' => $style_class,
+            'wg_style_inline' => $wg_style_inline,
+            'wg_style_class' => $wg_style_class,
             'name' => $this->getName(),
         ));
     }
@@ -183,7 +188,11 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
             'callback' => [],
             'style' => null,
             'script' => null,
-            'script-callback' => null,
+            'script_callback' => null,
+            'style_class' => null,
+            'style_inline' => null,
+            'wg_style_class' => null,
+            'wg_style_inline' => null,
         ]);
 
         $resolver->setAllowedTypes('title', ['string']);
@@ -197,7 +206,11 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
         $resolver->setAllowedTypes('callback', ['null', 'array']);
         $resolver->setAllowedTypes('style', ['null', 'string']);
         $resolver->setAllowedTypes('script', ['null', 'string']);
-        $resolver->setAllowedTypes('script-callback', ['null', 'string']);
+        $resolver->setAllowedTypes('script_callback', ['null', 'string']);
+        $resolver->setAllowedTypes('style_class', ['null', 'string']);
+        $resolver->setAllowedTypes('style_inline', ['null', 'string']);
+        $resolver->setAllowedTypes('wg_style_class', ['null', 'string']);
+        $resolver->setAllowedTypes('wg_style_inline', ['null', 'string']);
 
         $resolver->setRequired(['template']);
 
