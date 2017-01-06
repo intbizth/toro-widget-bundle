@@ -139,42 +139,45 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
             unset($options['auto_refresh_timer']);
         }
 
-        $scripts = $options['scripts'];
-        $styles = $options['styles'];
-        $callbacks = $options['script_callbacks'];
-        $style_inline = $options['css'];
-        $style_class = $options['style'];
-        $wg_css = $options['wg_css'];
-        $wg_style = $options['wg_style'];
-        $margin = $options['margin'];
-        $width = $options['width'];
+        $optionsData = [
+            'width',
+            'margin',
+            'scripts',
+            'styles',
+            'script_callbacks',
+            'css',
+            'style',
+            'wg_css',
+            'wg_style',
+        ];
 
-        unset(
-            $options['width'],
-            $options['margin'],
-            $options['scripts'],
-            $options['styles'],
-            $options['script_callbacks'],
-            $options['wg_css'],
-            $options['wg_style'],
-            $options['css'],
-            $options['style']
-        );
+        $scripts = (array) $options['scripts'];
+        $styles = (array) $options['styles'];
 
-        return $env->render($template, array(
+        return $env->render($template, array_merge($this->getOptionData($options, $optionsData), [
             'data' => $data,
             'options' => $options,
-            'styles' => (array) $styles,
-            'scripts' => (array) $scripts,
-            'callbacks' => $callbacks,
-            'css' => $style_inline,
-            'style' => $style_class,
-            'wg_css' => $wg_css,
-            'wg_style' => $wg_style,
-            'width' => $width,
-            'margin' => $margin,
+            'scripts' => $scripts,
+            'styles' => $styles,
             'name' => $this->getName(),
-        ));
+        ]));
+    }
+
+    /**
+     * @param array $options
+     * @param array $keys
+     * @return array
+     */
+    protected function getOptionData(array &$options, array $keys)
+    {
+        $data = [];
+
+        foreach ($keys as $key) {
+            $data[$key] = $options[$key];
+            unset($options[$key]);
+        }
+
+        return $data;
     }
 
     /**

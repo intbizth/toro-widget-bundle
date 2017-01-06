@@ -8,8 +8,8 @@
              data-widget-auto-refresh="{{ options['auto_refresh'] }}"
              data-widget-auto-refresh-timer="{{ options['auto_refresh_timer'] }}"
          {% endif %}
-         {% if callbacks %}
-             data-widget-script-callbacks="{{ callbacks|json_encode }}"
+         {% if script_callbacks %}
+             data-widget-script-callbacks="{{ script_callbacks|json_encode }}"
          {% endif %}
          {% if scripts %}
              data-widget-scripts="{{ scripts|json_encode }}"
