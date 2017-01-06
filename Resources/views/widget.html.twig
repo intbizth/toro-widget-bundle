@@ -1,4 +1,5 @@
 {%- block toro_widget -%}
+    {% set inline_css = 'width:'~width~';margin:'~margin~';'~printif(css, css) %}
     <div class="wg-toro wg-toro__{{ name }}{% if 'away' == options['visibility'] %} wg-toro--loaded{% endif %}{% if wg_style %} {{ wg_style }}{% endif %}"
          data-widget-name="{{ name }}"
          data-widget-options="{{ options|json_encode(16) }}"

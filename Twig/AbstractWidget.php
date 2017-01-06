@@ -89,8 +89,16 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
     {
         $resolver = new OptionsResolver();
         $this->configureOptions($resolver);
+        $this->runtimeOptions($resolver);
 
         return $resolver->resolve(array_replace_recursive($this->defaultOptions, $options));
+    }
+
+    /**
+     * @param OptionsResolver $resolver
+     */
+    protected function runtimeOptions(OptionsResolver $resolver)
+    {
     }
 
     /**
@@ -138,8 +146,12 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
         $style_class = $options['style'];
         $wg_css = $options['wg_css'];
         $wg_style = $options['wg_style'];
+        $margin = $options['margin'];
+        $width = $options['width'];
 
         unset(
+            $options['width'],
+            $options['margin'],
             $options['scripts'],
             $options['styles'],
             $options['script_callbacks'],
@@ -159,6 +171,8 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
             'style' => $style_class,
             'wg_css' => $wg_css,
             'wg_style' => $wg_style,
+            'width' => $width,
+            'margin' => $margin,
             'name' => $this->getName(),
         ));
     }
@@ -193,6 +207,8 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
             'css' => null,
             'wg_style' => null,
             'wg_css' => null,
+            'width' => 'auto',
+            'margin' => 'auto',
         ]);
 
         $resolver->setAllowedTypes('title', ['string']);
@@ -211,6 +227,8 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
         $resolver->setAllowedTypes('css', ['null', 'string']);
         $resolver->setAllowedTypes('wg_style', ['null', 'string']);
         $resolver->setAllowedTypes('wg_css', ['null', 'string']);
+        $resolver->setAllowedTypes('width', ['string']);
+        $resolver->setAllowedTypes('margin', ['string']);
 
         $resolver->setRequired(['template']);
 
@@ -224,6 +242,16 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
 
             return $value;
         });
+    }
+
+    /**
+     * @param string $content
+     *
+     * @return int
+     */
+    protected function isHasTwigTag($content)
+    {
+        return preg_match('/\{\{(.*)\}\}/', $content);
     }
 
     /**
