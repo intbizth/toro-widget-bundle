@@ -174,6 +174,8 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
 
         foreach ($keys as $key) {
             $data[$key] = $options[$key];
+            // TODO: this should store in cache inteastof remove them.
+            // unset mean that user defined options will not send to server via ajax call like onscreen visibility.
             unset($options[$key]);
         }
 
