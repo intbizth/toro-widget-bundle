@@ -94,7 +94,6 @@
 
         // unset some options for submitting
         delete this.options.remote;
-        delete this.options.control;
 
         new LazyLoad(this);
         new AutoRefresh(this);
