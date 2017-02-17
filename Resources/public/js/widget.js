@@ -246,7 +246,7 @@
                     this.$element.fadeIn();
                 }
 
-                Plugin.call(this.$element);
+                this.$element.twidget();
 
                 $(document).trigger('dom-node-inserted', [this.$element]);
             };
@@ -359,6 +359,25 @@
     function Plugin(option) {
         return this.each(function () {
             var $this = $(this);
+            var styles = $this.data('widget-styles') || [];
+            var scripts = $this.data('widget-scripts') || [];
+
+            if (styles.length) {
+                for(var i = 0; i < styles.length; i++) {
+                    loadStyle(styles[i]);
+                }
+            }
+
+            if (scripts.length) {
+                var callbacks = $this.data('widget-script-callbacks') || [];
+                for (var i = 0; i < scripts.length; i++) {
+                    var callback = callbacks[i] || function () {};
+                    loadScript(scripts[i], function () {
+                        callback();
+                    });
+                }
+            }
+
             var data = $this.data('twidget');
             var options = deepExtend({}, Widget.DEFAULTS, typeof option == 'object' && option);
 
@@ -411,26 +430,6 @@
 
     // DATA-API
     $('[data-widget-name]').each(function () {
-        var $this = $(this);
-        var styles = $this.data('widget-styles') || [];
-        var scripts = $this.data('widget-scripts') || [];
-
-        if (styles.length) {
-            for(var i = 0; i < styles.length; i++) {
-                loadStyle(styles[i]);
-            }
-        }
-
-        if (scripts.length) {
-            var callbacks = $this.data('widget-script-callbacks') || [];
-            for (var i = 0; i < scripts.length; i++) {
-                var callback = callbacks[i] || function () {};
-                loadScript(scripts[i], function () {
-                    callback();
-                });
-            }
-        }
-
-        Plugin.call($this);
+        Plugin.call($(this));
     });
 }($);
