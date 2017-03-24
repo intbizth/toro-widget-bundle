@@ -214,6 +214,7 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
             'wg_css' => null,
             'width' => 'auto',
             'margin' => 'auto',
+            'scroll' => null,
         ]);
 
         $resolver->setAllowedTypes('title', ['string']);
@@ -234,6 +235,7 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
         $resolver->setAllowedTypes('wg_css', ['null', 'string']);
         $resolver->setAllowedTypes('width', ['string']);
         $resolver->setAllowedTypes('margin', ['string']);
+        $resolver->setAllowedTypes('scroll', ['string', 'null']);
 
         $resolver->setRequired(['template']);
 

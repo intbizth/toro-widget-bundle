@@ -159,6 +159,7 @@
             this.$mask.find('.wg-mask').remove();
             return;
         }
+        var is_custom_loading = false;
 
         switch (mode) {
             case 'clear':
@@ -183,6 +184,15 @@
                 break;
             default:
                 this.$mask = this.$element.find(this.control.mask.mode);
+                is_custom_loading = true;
+        }
+
+        if(is_custom_loading) {
+            var $mask_template =  $('.wg-loading-template').find(this.control.mask.mode);
+            if($mask_template.length) {
+                this.$element.html($mask_template[0]);
+                return;
+            }
         }
 
         var $masking = this.$mask.find('.wg-mask');
@@ -217,6 +227,12 @@
         var me = this;
         var mode = opt.mode || 'clear';
         var callback = (opt.options || {}).callback || {};
+        var scroll = (opt.options || {}).scroll;
+
+        // Sometime, We need to change mode between load.
+        if(opt.options && opt.options.control) {
+            this.control = deepExtend(this.control, opt.options.control || {});
+        }
 
         var success = opt.success || window[callback.success] || function (response) {
                 var $response = $(response);
@@ -238,7 +254,17 @@
                         $content = null;
                 }
 
+                var scrollPosition;
+                if('old_position' == scroll) {
+                    scrollPosition = $(window).scrollTop();
+                }
+
                 this.$element.replaceWith($response);
+
+                if(scrollPosition) {
+                    $(window).scrollTop(scrollPosition);
+                }
+
                 this.$element = $response;
                 this.$element.addClass('wg-toro--loaded');
 
