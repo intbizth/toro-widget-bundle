@@ -190,7 +190,7 @@
         if(is_custom_loading) {
             var $mask_template =  $('.wg-loading-template').find(this.control.mask.mode);
             if($mask_template.length) {
-                this.$element.html($mask_template[0]);
+                this.$element.html($mask_template.html());
                 return;
             }
         }
