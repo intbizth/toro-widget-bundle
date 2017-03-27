@@ -185,7 +185,6 @@
                 break;
             default:
                 this.$mask = this.$element.find(this.control.mask.mode);
-
                 if (!this.$mask.length) {
                     switch (custom_type) {
                         case 'clear':
@@ -195,6 +194,7 @@
                             this.$mask = this.$element.append($(this.control.mask.mode).html());
                             break;
                     }
+                    return;
                 }
         }
 
