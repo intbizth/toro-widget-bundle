@@ -214,7 +214,7 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
             'wg_css' => null,
             'width' => 'auto',
             'margin' => 'auto',
-            'scroll' => null,
+            'scroll' => null, // top | current | null
         ]);
 
         $resolver->setAllowedTypes('title', ['string']);

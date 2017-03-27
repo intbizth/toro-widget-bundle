@@ -138,6 +138,7 @@
     Widget.DEFAULTS = {
         mask: {
             mode: 'over', // none | clear | over | ticker | .selector
+            custom_type: 'clear', // clear | fullscreen
             style: 'wg-loading' // wg-loading | wg-loading--double | wg-loading-pulse
         }
     };
@@ -146,6 +147,7 @@
         this.$mask = this.$element;
         var style = this.control.mask.style;
         var mode = this.control.mask.mode;
+        var custom_type = this.control.mask.custom_type;
 
         if ('none' === mode) {
             return;
@@ -159,7 +161,6 @@
             this.$mask.find('.wg-mask').remove();
             return;
         }
-        var is_custom_loading = false;
 
         switch (mode) {
             case 'clear':
@@ -184,15 +185,17 @@
                 break;
             default:
                 this.$mask = this.$element.find(this.control.mask.mode);
-                is_custom_loading = true;
-        }
 
-        if(is_custom_loading) {
-            var $mask_template =  $('.wg-loading-template').find(this.control.mask.mode);
-            if($mask_template.length) {
-                this.$element.html($mask_template.html());
-                return;
-            }
+                if (!this.$mask.length) {
+                    switch (custom_type) {
+                        case 'clear':
+                            this.$mask = this.$element.html($(this.control.mask.mode).html());
+                            break;
+                        case 'fullscreen':
+                            this.$mask = this.$element.append($(this.control.mask.mode).html());
+                            break;
+                    }
+                }
         }
 
         var $masking = this.$mask.find('.wg-mask');
@@ -255,7 +258,11 @@
                 }
 
                 var scrollPosition;
-                if('old_position' == scroll) {
+                if('top' === scroll) {
+                    scrollPosition = 1;
+                }
+
+                if('current' === scroll) {
                     scrollPosition = $(window).scrollTop();
                 }
 
