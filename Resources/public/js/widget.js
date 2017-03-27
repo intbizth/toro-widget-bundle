@@ -137,8 +137,7 @@
 
     Widget.DEFAULTS = {
         mask: {
-            mode: 'over', // none | clear | over | ticker | .selector
-            custom_type: 'clear', // clear | fullscreen
+            mode: 'over', // none | clear | over | ticker | fullscreen | .selector | { el: .selector, target: .target }
             style: 'wg-loading' // wg-loading | wg-loading--double | wg-loading-pulse
         }
     };
@@ -183,19 +182,32 @@
             case 'ticker':
                 this.$mask = this.$ticker;
                 break;
+            case 'fullscreen':
+                this.$mask = $('body')
+                    .css('position', 'relative')
+                    .append(
+                        $('<div class="wg-mask wg-mask--over"/>').css({
+                            'position': 'absolute', 'z-index': 1000,
+                            'top': 0, 'bottom': 0, 'left': 0, 'right': 0,
+                            'with': '100%', 'height': '100%'
+                        })
+                    )
+                ;
+                break;
             default:
-                this.$mask = this.$element.find(this.control.mask.mode);
-                if (!this.$mask.length) {
-                    switch (custom_type) {
-                        case 'clear':
-                            this.$mask = this.$element.html($(this.control.mask.mode).html());
-                            break;
-                        case 'fullscreen':
-                            this.$mask = this.$element.append($(this.control.mask.mode).html());
-                            break;
-                    }
-                    return;
+                var $target = this.$element;
+
+                if ('object' === typeof mode) {
+                    $target = $(mode.target);
+                    mode = mode.el;
                 }
+
+                this.$mask = $target.find(mode);
+
+                if (!this.$mask.length) {
+                    this.$mask = $target.append($(mode).html());
+                }
+                break;
         }
 
         var $masking = this.$mask.find('.wg-mask');
