@@ -146,7 +146,6 @@
         this.$mask = this.$element;
         var style = this.control.mask.style;
         var mode = this.control.mask.mode;
-        var custom_type = this.control.mask.custom_type;
 
         if ('none' === mode) {
             return;
@@ -198,7 +197,7 @@
                 var $target = this.$element;
 
                 if ('object' === typeof mode) {
-                    $target = $(mode.target);
+                    $target = mode.target ? $(mode.target) : $target;
                     mode = mode.el;
                 }
 
