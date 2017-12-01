@@ -4,13 +4,13 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <!--
+
     <services>
-        <service id="toro_widget.example" class="Toro\Bundle\WidgetBundle\Example">
-            <argument type="service" id="service_id" />
-            <argument>plain_value</argument>
-            <argument>%parameter_name%</argument>
+         <service id="toro.widget.registry" class="Toro\Bundle\WidgetBundle\Registry\WidgetRegistry" public="true" lazy="true">
+            <argument type="service" id="file_locator"/>
+            <argument type="service" id="cache.app"/>
+            <argument>%kernel.debug%</argument>
         </service>
     </services>
-    -->
+
 </container>

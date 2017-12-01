@@ -46,6 +46,9 @@ class RegisterWidgetPass implements CompilerPassInterface
 
                 if (isset($widgets[$class])) {
                     $definition->addMethodCall('setDefaultOptions', [$widgets[$class]['options']]);
+                    $container->getDefinition('toro.widget.registry')
+                        ->addMethodCall('addWidget', [$class])
+                    ;
                 }
             }
         }

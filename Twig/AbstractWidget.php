@@ -73,9 +73,9 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
         }
 
         return [
-            new \Twig_SimpleFunction($name, [$this, 'render'], [
+            new \Twig_Function($name, [$this, 'render'], [
                 'needs_environment' => true,
-                'is_safe' => array('html'),
+                'is_safe' => ['html'],
             ]),
         ];
     }
@@ -271,5 +271,5 @@ abstract class AbstractWidget extends \Twig_Extension implements WidgetInterface
     /**
      * {@inheritdoc}
      */
-    //abstract public function getName();
+    abstract static public function getName();
 }

@@ -10,19 +10,14 @@ use Toro\Bundle\WidgetBundle\Twig\WidgetInterface;
 
 class DefaultController extends Controller
 {
-    public function demoAction()
-    {
-        return $this->render('ToroWidgetBundle::index.html.twig');
-    }
-
     public function renderAction(Request $request)
     {
         $twig = $this->get('twig');
-        $widget = (array) $request->get('widget');
+        $widget = $request->get('widget', []);
         $widgetName = null;
 
         if (!$notFound = empty($widget['name'])) {
-            $widgetName = $widget['name'];
+            $widgetName = $this->get('toro.widget.registry')->getWidgetClass($widget['name']);
             $notFound = !$twig->hasExtension($widgetName);
         }
 
@@ -40,6 +35,7 @@ class DefaultController extends Controller
         }
 
         $options = isset($widget['options']) ? $widget['options'] : [];
+        $options['visibility'] = 'away';
 
         // convert data type
         array_walk_recursive($options, function (&$value) {
